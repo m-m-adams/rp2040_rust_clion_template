@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CLionExternalBuildManager">
+    <target id="825e9f01-6afe-4989-b67a-b5d0fea89205" name="Cargo Debug" defaultType="TOOL">
+      <configuration id="995c294d-50be-4776-b84b-c2fe0bea6cf8" name="Cargo Debug" toolchainName="Embedded Rust Pico">
+        <build type="TOOL">
+          <tool actionId="Tool_Embedded Rust_Debug" />
+        </build>
+        <clean type="TOOL">
+          <tool actionId="Tool_Embedded Rust_Clean" />
+        </clean>
+      </configuration>
+    </target>
+    <target id="594d8fd9-e615-48ca-bbda-f64bc8021e1b" name="Cargo Run" defaultType="TOOL">
+      <configuration id="bf9500b0-5eb6-4f99-98ce-22aa3f11eadc" name="Cargo Run" toolchainName="Embedded Rust Pico">
+        <build type="TOOL">
+          <tool actionId="Tool_Embedded Rust_Release" />
+        </build>
+        <clean type="TOOL">
+          <tool actionId="Tool_Embedded Rust_Clean" />
+        </clean>
+      </configuration>
+    </target>
+  </component>
+</project>
