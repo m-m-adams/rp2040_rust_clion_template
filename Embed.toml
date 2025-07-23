@@ -26,14 +26,18 @@ connect_under_reset = false
 [default.rtt]
 enabled = true
 up_mode = "NoBlockSkip"
-channels = [
-    { up = 0, down = 0, name = "name", up_mode = "NoBlockSkip", format = "Defmt" },
+
+up_channels = [
+    { channel = 0, mode = "NoBlockSkip", format = "Defmt", show_location = true, show_timestamp = true },
+]
+
+down_channels = [
+    { channel = 0, mode = "BlockIfFull" }
 ]
 timeout = 3000
-show_timestamps = true
 log_enabled = false
 log_path = "./logs"
 
 [default.gdb]
 enabled = true
-gdb_connection_string = "127.0.0.1:50000"
+gdb_connection_string = "127.0.0.1:5000"

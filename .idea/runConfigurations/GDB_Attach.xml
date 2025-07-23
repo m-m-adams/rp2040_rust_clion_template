@@ -1,6 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="GDB Attach" type="CLion_Remote" version="1" remoteCommand="localhost:50000" symbolFile="$PROJECT_DIR$/target/thumbv6m-none-eabi/debug/rp2040-project-template" sysroot="">
-    <debugger kind="GDB" isBundled="true" />
-    <method v="2" />
-  </configuration>
-</component>
