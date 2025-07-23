@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="GDB Attach" type="RsRemoteRunConfiguration" debuggerKind="GDB" remoteCommand="127.0.0.1:5000" symbolFile="$PROJECT_DIR$/target/thumbv6m-none-eabi/debug/rp2040-project-template" sysroot="">
+    <method v="2" />
+  </configuration>
+</component>

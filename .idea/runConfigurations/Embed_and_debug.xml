@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Embed and debug" type="CompoundRunConfigurationType">
+    <toRun name="embed" type="CargoCommandRunConfiguration" />
+    <toRun name="GDB Attach" type="RsRemoteRunConfiguration" />
+    <method v="2" />
+  </configuration>
+</component>
