@@ -1,10 +1,7 @@
-//! This example test the RP Pico W on board LED.
-//!
-//! It does not work with the RP Pico board. See blinky.rs.
-
 #![no_std]
 #![no_main]
 
+use cyw43::Control;
 use cyw43_pio::{PioSpi, DEFAULT_CLOCK_DIVIDER};
 use defmt::*;
 use embassy_executor::Spawner;
@@ -12,9 +9,13 @@ use embassy_rp::bind_interrupts;
 use embassy_rp::gpio::{Level, Output};
 use embassy_rp::peripherals::{DMA_CH0, PIO0};
 use embassy_rp::pio::{InterruptHandler, Pio};
+use embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex;
+use embassy_sync::channel::Channel;
 use embassy_time::{Duration, Timer};
 use static_cell::StaticCell;
 use {defmt_rtt as _, panic_probe as _};
+
+static SHARED_CHANNEL: Channel<CriticalSectionRawMutex, u32, 8> = Channel::new();
 
 bind_interrupts!(struct Irqs {
     PIO0_IRQ_0 => InterruptHandler<PIO0>;
@@ -23,6 +24,18 @@ bind_interrupts!(struct Irqs {
 #[embassy_executor::task]
 async fn cyw43_task(runner: cyw43::Runner<'static, Output<'static>, PioSpi<'static, PIO0, 0, DMA_CH0>>) -> ! {
     runner.run().await
+}
+
+#[embassy_executor::task]
+async fn led_setter( ctr: &'static mut Control<'static>) {
+    let delay = Duration::from_secs(1);
+    loop {
+        info!("led on!");
+        Timer::after(delay).await;
+
+        info!("led off!");
+        Timer::after(delay).await;
+    }
 }
 
 #[embassy_executor::main]
@@ -62,14 +75,5 @@ async fn main(spawner: Spawner) {
         .set_power_management(cyw43::PowerManagementMode::PowerSave)
         .await;
 
-    let delay = Duration::from_secs(1);
-    loop {
-        info!("led on!");
-        control.gpio_set(0, true).await;
-        Timer::after(delay).await;
 
-        info!("led off!");
-        control.gpio_set(0, false).await;
-        Timer::after(delay).await;
-    }
 }
