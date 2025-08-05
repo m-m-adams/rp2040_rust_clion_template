@@ -27,13 +27,15 @@ async fn cyw43_task(runner: cyw43::Runner<'static, Output<'static>, PioSpi<'stat
 }
 
 #[embassy_executor::task]
-async fn led_setter( ctr: &'static mut Control<'static>) {
+async fn led_setter(mut pins: [Output<'static>; 4]) {
     let delay = Duration::from_secs(1);
     loop {
         info!("led on!");
+        pins[0].set_high();
         Timer::after(delay).await;
 
         info!("led off!");
+        pins[0].set_low();
         Timer::after(delay).await;
     }
 }
@@ -41,8 +43,15 @@ async fn led_setter( ctr: &'static mut Control<'static>) {
 #[embassy_executor::main]
 async fn main(spawner: Spawner) {
     let p = embassy_rp::init(Default::default());
-    //let fw = include_bytes!("../cyw43-firmware/43439A0.bin");
-   // let clm = include_bytes!("../cyw43-firmware/43439A0_clm.bin");
+    // let fw = include_bytes!("../cyw43-firmware/43439A0.bin");
+    // let clm = include_bytes!("../cyw43-firmware/43439A0_clm.bin");
+
+    let leds = [
+        Output::new(p.PIN_4, Level::Low),
+        Output::new(p.PIN_5, Level::Low),
+        Output::new(p.PIN_6, Level::Low),
+        Output::new(p.PIN_7, Level::Low),
+    ];
 
     // To make flashing faster for development, you may want to flash the firmwares independently
     // at hardcoded addresses, instead of baking them into the program with `include_bytes!`:
@@ -69,11 +78,12 @@ async fn main(spawner: Spawner) {
     let state = STATE.init(cyw43::State::new());
     let (_net_device, mut control, runner) = cyw43::new(state, pwr, spi, fw).await;
     unwrap!(spawner.spawn(cyw43_task(runner)));
-
+    unwrap!(spawner.spawn(led_setter(leds)));
     control.init(clm).await;
     control
         .set_power_management(cyw43::PowerManagementMode::PowerSave)
         .await;
+
 
 
 }
